@@ -111,3 +111,10 @@ python run_generation_rplan.py --exprm $EXPRM_VAR --num_samples 1
 It will load the trained model variant according to the variable.
 
 ## Evaluation
+
+To evaluate generated results saved in `$RESULTS_DIR`, simply run the following command:
+
+```
+python run_metric.py $RESULTS_DIR
+```
+
