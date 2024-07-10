@@ -1,12 +1,10 @@
 from src.utils import FloorplansAndPromptEvaluation, Evaluate
-
-plans = FloorplansAndPromptEvaluation('/network/scratch/l/luozhiha/results/results_v7_greedy/customer_dropout_longprompt/0/only_room_area/')
-plans.evaluate()
-plans.summarize()
-print(plans.results)
-print(plans.summaries)
+# plans = FloorplansAndPromptEvaluation('/network/scratch/l/luozhiha/results/results_v7_greedy/customer_dropout_longprompt/0/only_room_area/')
+# plans.evaluate()
+# plans.summarize()
+# print(plans.results)
+# print(plans.summaries)
 # plans.cleanup(keep_results=True, keep_summaries=True)
-import pdb; pdb.set_trace()
 
 overall_evaluation = Evaluate('/network/scratch/l/luozhiha/results/rplan/',
                               metrics='all',
@@ -16,6 +14,5 @@ overall_evaluation = Evaluate('/network/scratch/l/luozhiha/results/rplan/',
 overall_evaluation.evaluate()
 # overall_evaluation.summarize()
 # overall_evaluation.plot_results()
-import pdb; pdb.set_trace()
 # overall_evaluation.save_summaries(save_path='/network/scratch/x/xuolga/Results/results_all.pkl')
 # import pdb; pdb.set_trace()
