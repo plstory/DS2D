@@ -1,5 +1,21 @@
 # DStruct2Design: Data and Benchmarks for Data Structure Driven Generative Floor Plan Design
 
+## Paper
+Our paper is available [here](https://arxiv.org/abs/2407.15723)
+
+### if you use this repository, please cite our work:
+```
+@misc{luo2024dstruct2designdatabenchmarksdata,
+      title={DStruct2Design: Data and Benchmarks for Data Structure Driven Generative Floor Plan Design}, 
+      author={Zhi Hao Luo and Luis Lara and Ge Ya Luo and Florian Golemo and Christopher Beckham and Christopher Pal},
+      year={2024},
+      eprint={2407.15723},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2407.15723}, 
+}
+```
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
