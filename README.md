@@ -38,7 +38,7 @@ pip install -r requirment.txt
 
 ### ProcTHOR
 
-You can download the converted ProcTHOR-10K dataset from [here]() and put it under `datasets/procthor_converted/`
+You can download the converted ProcTHOR-10K dataset from [here](https://huggingface.co/datasets/ludolara/DStruct2Design) and put it under `datasets/procthor_converted/`
 
 ### RPLAN
 
