@@ -141,7 +141,7 @@ class ProcTHORConverter:
 
         return {
               'id': element['id'],
-              'polygon': [
+              'position': [
                   {'x': round(element_start_abs_x, self.round_value), 'y': round(element_start_abs_y, self.round_value)},
                   {'x': round(element_end_abs_x, self.round_value), 'y': round(element_end_abs_y, self.round_value)}
               ]
@@ -188,7 +188,7 @@ class ProcTHORConverter:
                     "edges": edges,
                     "doors": doors,
                     "windows": windows,
-                    "prompts": self.create_five_level_prompt(len(cleaned_rooms), rooms_type, self.format_total_area(total_area), cleaned_rooms)
+                    # "prompts": self.create_five_level_prompt(len(cleaned_rooms), rooms_type, self.format_total_area(total_area), cleaned_rooms)
                 }
 
                 extracted_room_data.append(entry)
@@ -200,9 +200,8 @@ class ProcTHORConverter:
           'test':  Dataset.from_list(self.extract_room_data_from_dataset(dataset["test"])),
           'validation':  Dataset.from_list(self.extract_room_data_from_dataset(dataset["val"]))
       })
-
       return ds_splits
-  
+
     def __call__(self, dataset: Dict[str, List[Dict]]) -> DatasetDict:
         return self.create_dataset(dataset)
 
@@ -225,17 +224,17 @@ class ProcTHORConverter:
             ax.plot(x_coords, z_coords, color=colors[index % len(colors)], label=f"{room['room_type']} ({index})")
 
         for door in doors:
-            start_x = door['polygon'][0]['x']
-            start_y = door['polygon'][0]['y']
-            end_x = door['polygon'][1]['x']
-            end_y = door['polygon'][1]['y']
+            start_x = door['position'][0]['x']
+            start_y = door['position'][0]['y']
+            end_x = door['position'][1]['x']
+            end_y = door['position'][1]['y']
             ax.plot([start_x, end_x], [start_y, end_y], color='brown', linewidth=3)
 
         for window in windows:
-            start_x = window['polygon'][0]['x']
-            start_y = window['polygon'][0]['y']
-            end_x = window['polygon'][1]['x']
-            end_y = window['polygon'][1]['y']
+            start_x = window['position'][0]['x']
+            start_y = window['position'][0]['y']
+            end_x = window['position'][1]['x']
+            end_y = window['position'][1]['y']
             ax.plot([start_x, end_x], [start_y, end_y], color='cyan', linewidth=3)
 
         ax.set_xlabel('X coordinate')
@@ -244,6 +243,7 @@ class ProcTHORConverter:
         ax.legend()
         plt.show()
 
+# import prior
 # dataset = prior.load_dataset("procthor-10k")
 # converter = ProcTHORConverter(round_value=1)
 # new_dataset = converter(dataset)
