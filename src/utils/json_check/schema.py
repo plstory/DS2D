@@ -105,14 +105,86 @@ schema = {
                 "x": {
                   "type": "number"
                 },
+                "y": {
+                  "type": "number"
+                },
                 "z": {
                   "type": "number"
                 }
               },
-              "required": ["x", "z"]
+              "anyOf": [
+                {"required": ["x", "z"]},
+                {"required": ["x", "y"]}
+              ]
             }
           }
         }
+      }
+    },
+    "doors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "position": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "z": {
+                  "type": "number"
+                }
+              },
+              "anyOf": [
+                {"required": ["x", "z"]},
+                {"required": ["x", "y"]}
+              ]
+            }
+          }
+        },
+        "required": ["id", "position"]
+      }
+    },
+    "windows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "position": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "z": {
+                  "type": "number"
+                }
+              },
+              "anyOf": [
+                {"required": ["x", "z"]},
+                {"required": ["x", "y"]}
+              ]
+            }
+          }
+        },
+        "required": ["id", "position"]
       }
     }
   }
