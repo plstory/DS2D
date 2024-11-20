@@ -31,7 +31,7 @@ pip install llama-recipes
 
 #### Install from requirement.txt:
 ```
-pip install -r requirment.txt
+pip install -r requirements.txt
 ```
 
 ## Datasets
