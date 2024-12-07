@@ -31,11 +31,6 @@ def main(args):
             end_idx = 1000
         exprm = args.exprm
 
-    # print(f'exprm: {exprm}, num_samples: {num_samples}!!')
-    # print(f'exprm: {exprm}, num_samples: {num_samples}!!')
-    # print(f'exprm: {exprm}, num_samples: {num_samples}!!')
-    # print(f'exprm: {exprm}, num_samples: {num_samples}!!')
-
     if version == 'bd':
         model_dir = "models/procthor_weights_BD_variants/"
     else:

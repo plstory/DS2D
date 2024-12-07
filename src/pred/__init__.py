@@ -71,49 +71,10 @@ def load_model(model_id="meta-llama/Meta-Llama-3-8B-Instruct", model_dir="models
 
 def predict_output(model, tokenizer, data, num_samples = 1, bubble_diagram="bd"):
     datapoint = deepcopy(data)
-    # 1: 'only_total_area',
-    # 2: 'only_room_area',
-    # 3: 'total_some_room'
-    # prompt = {}
-    # prompt['room_count'] = datapoint['room_count']
-    # if partial_prompt == 0:
-    #     prompt = datapoint['prompt']
-    # if partial_prompt in [1,3]: # only_total_area
-    #     prompt['total_area'] = datapoint['prompt']['total_area']
-    # if partial_prompt in [2,3]: # only_room_area
-    #     rooms = datapoint['rooms'].copy()
-    #     if partial_prompt == 3:
-    #         rands = np.random.random(len(rooms))
-    #         rands[np.argmax(rands)] = 1.0
-    #         drop_idx = np.where(rands<0.5)[0]
-    #         for idx in sorted(drop_idx,reverse=True):
-    #             del rooms[idx]
-    #     for room in rooms:
-    #         for key in list(room.keys()):
-    #             if key not in set(['area','room_type', 'id']):
-    #                 del room[key]
-    #     prompt['rooms'] = rooms
-    # if prompt_style == 'old':
-    #     eval_prompt = f"""Input:\n{prompt}\n Output:"""
-    # elif prompt_style == 'v7':
-    #     instruction_str = 'you are to generate a floor plan in a JSON structure where each room is defined by polygon vertices, make sure to not overlap the polygons. you have to satisfy the requirements passed by the user in a JSON structure. when room area and total area requirements exist, make sure the polygon areas add up to the required number.'
 
-    #     prompt_str = f"""<|start_header_id|>system<|end_header_id|> {instruction_str}<|eot_id|><|start_header_id|>user<|end_header_id|> {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|> """
-    # elif prompt_style == 'v8':
     instruction_str = 'you are to generate a floor plan in a JSON structure where each room is defined by polygon vertices, make sure to not overlap the polygons. you have to satisfy the adjacency constraints given as pairs of neighboring rooms; two connecting rooms, room1 and room2, are presented as (room1_type/"room1_id", room2_type/"room2_id"). you have to also match the specifications passed by the user in a JSON structure when they exist. when room area and total area requirements exist, make sure the polygon areas add up to the required number.'
     user_str = ''
-    # if 'edges' in datapoint.keys():
-    #     adjacency_str = ''
-    #     for u,v in datapoint['edges']:
-    #         type_u = datapoint['rooms'][u]['room_type']
-    #         type_v = datapoint['rooms'][v]['room_type']
-    #         id_u = datapoint['rooms'][u]['id']
-    #         id_v = datapoint['rooms'][v]['id']
-    #         adjacency_str += f'({type_u}/"{id_u}", {type_v}/"{id_v}"), '
-    #     adjacency_str = adjacency_str.strip(', ')
-    #     if len(adjacency_str):
-    #         user_str += f'adjacency constraints: {adjacency_str}. '
-    #     del datapoint['edges']
+
     prompt = generate_prompt(datapoint, bubble_diagram=bubble_diagram)
     user_str += f"specifications: {prompt}"
     prompt_str = f"""<|start_header_id|>system<|end_header_id|> {instruction_str}<|eot_id|><|start_header_id|>user<|end_header_id|>{user_str}<|eot_id|><|start_header_id|>assistant<|end_header_id|> """
@@ -122,7 +83,6 @@ def predict_output(model, tokenizer, data, num_samples = 1, bubble_diagram="bd")
     model_input = tokenizer(prompt_str, return_tensors="pt").to("cuda")
     model.eval()
     json_output = []
-    # del datapoint['prompt']
     ground_truth = str(datapoint)
     with torch.no_grad():
         do_sample = num_samples>1
