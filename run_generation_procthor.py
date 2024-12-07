@@ -1,5 +1,5 @@
 from src.pred import predict_outputs, predict_outputs_multiple
-from src.pred import load_model, load_dataset
+from src.pred import load_model, load_dataset_with_fallback
 import os
 import numpy as np
 import json
@@ -31,10 +31,10 @@ def main(args):
             end_idx = 1000
         exprm = args.exprm
 
-    print(f'exprm: {exprm}, num_samples: {num_samples}!!')
-    print(f'exprm: {exprm}, num_samples: {num_samples}!!')
-    print(f'exprm: {exprm}, num_samples: {num_samples}!!')
-    print(f'exprm: {exprm}, num_samples: {num_samples}!!')
+    # print(f'exprm: {exprm}, num_samples: {num_samples}!!')
+    # print(f'exprm: {exprm}, num_samples: {num_samples}!!')
+    # print(f'exprm: {exprm}, num_samples: {num_samples}!!')
+    # print(f'exprm: {exprm}, num_samples: {num_samples}!!')
 
     if version == 'bd':
         model_dir = "models/procthor_weights_BD_variants/"
@@ -43,7 +43,7 @@ def main(args):
 
     model, tokenizer = load_model(model_dir=model_dir,exprm=exprm)
     #use validation  set here because test set was used for validation, just naming difference.
-    test_dataset = load_dataset(dataset_name="datasets/procthor_converted",split="validation")
+    test_dataset = load_dataset_with_fallback(dataset_name="datasets/procthor_converted", split="validation")
     np.random.seed(12345)
     idx_select = np.random.permutation(len(test_dataset))[start_idx:end_idx]
     test_dataset = test_dataset.select(idx_select)
@@ -53,7 +53,7 @@ def main(args):
     else:
         result_dir = f'generations/procthor_{version}_greedy'
 
-    predict_outputs_multiple(model, tokenizer, test_dataset, exprm, num_samples=num_samples,prompt_style={version}, result_dir=result_dir, start_idx=start_idx, end_idx=end_idx)
+    predict_outputs_multiple(model, tokenizer, test_dataset, exprm, num_samples=num_samples,prompt_style=version, result_dir=result_dir, start_idx=start_idx, end_idx=end_idx)
 
 def parse_arguments():
     parser = argparse.ArgumentParser()

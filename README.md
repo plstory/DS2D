@@ -106,12 +106,12 @@ To run genneration after the pretrained weights are obtained, do the following:
 #### To run generation on PROCTHOR-trained models:
 
 ```
-python run_generation_procthor.py --exprm $EXPRM_VAR --num_samples 1 --version $BD_VAR
+python run_generation_procthor.py --exprm "full_prompt" --num_samples 1 --version $BD_VAR
 ```
 
 `$BD_VAR` can be set to either `'bd'` or `'non_bd'`,
 
-`$EXPRM_VAR` can be set to `'specific'`, `'mask'`, or `'preset_mask'`
+<!-- `$EXPRM_VAR` can be set to `'specific'`, `'mask'`, or `'preset_mask'` -->
 
 It will load the trained model variant according to the variable.
 
