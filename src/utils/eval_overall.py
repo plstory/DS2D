@@ -50,6 +50,7 @@ class Evaluate:
                                                strat_name=model_tag+" "+strat+" sd", if_std=True)
 
                 strat_df = pd.concat([df, df_sd], axis=0) if strat_df is None else pd.concat([strat_df, df, df_sd], axis=0)
+
             with open(os.path.join(path, "evaluation_results.txt"), 'w') as f:
                 f.write(get_latex_from_df(strat_df))
             strat_df.to_pickle(os.path.join(path, "evaluation_df.pkl"))
@@ -58,6 +59,33 @@ class Evaluate:
             f.write(get_latex_from_df(summary_df))
         summary_df.to_pickle(os.path.join(self.root_dir, "evaluation_df.pkl"))
 
+    def evaluate_aggregate(self):
+        from .plot import get_latex_from_df, get_df_from_summary_v2
+        import pandas as pd
+        summary_df = None
+        for model_tag, strat_lookup in self.model_strats_lookup.items():
+            strat_df = None
+            path = os.path.join(self.root_dir, model_tag)
+            for strat, sample_ids in strat_lookup.items():
+                for sample_id in sample_ids:
+                    plans = FloorplansAndPromptEvaluation(os.path.join(self.root_dir, model_tag, sample_id, strat), metrics=self.metrics)
+                    plans.evaluate()
+                    self.RESULTS[model_tag][strat] += plans.results
+                    if self.if_separate_num_room_results:
+                        self.RESULTS_separated_by_num_room[plans.get_num_rooms_from_prompt()][model_tag][strat] += plans.results
+
+                self.SUMMARIES[model_tag][strat], self.SD_SUMMARIES[model_tag][strat] = self.RESULTS[model_tag][strat].summarize()
+                df = get_df_from_summary_v2(self.SUMMARIES[model_tag][strat],
+                                            categories=self.SUMMARIES[model_tag][strat].__dict__.keys(),
+                                            strat_name=model_tag+" "+strat+" avg")
+                strat_df = pd.concat([df], axis=0) if strat_df is None else pd.concat([strat_df, df], axis=0)
+
+        column_avg = strat_df.mean()
+        column_std = strat_df.std()
+        formatted_stats = {col: f"{column_avg[col]:.2f}±{column_std[col]:.2f}" for col in strat_df.columns}
+        for col, stats in formatted_stats.items():
+            print(f"{col}: {stats}")
+        
     
     def get_model_tags(self, experiment_list):
         model_tags = []
@@ -96,7 +124,8 @@ class Evaluate:
     
     def write_summary_to_latex_file(self, summary, strat_name, save_path):
         from .plot import get_latex_from_df, get_df_from_summary
-        df = get_df_from_summary(summary, categories=summary.__dict__.keys(), strat_name=strat_name)
+        # df = get_df_from_summary(summary, categories=summary.__dict__.keys(), strat_name=strat_name)
+        df = get_df_from_summary(summary, categories=summary.keys(), strat_name=strat_name)
         with open(save_path, 'w') as f:
             f.write(get_latex_from_df(df))
 

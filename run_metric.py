@@ -7,4 +7,5 @@ overall_evaluation = Evaluate(eval_path,
                               metrics='all',
                               experiment_list='all',
                               if_separate_num_room_results=False)
-overall_evaluation.evaluate()
+# overall_evaluation.evaluate()
+overall_evaluation.evaluate_aggregate()
