@@ -55,11 +55,11 @@ def get_df_from_summary(summary, categories=None, strat_name='Dataset'):
             r.append(metric_result[0])
         elif category in ['room_id_prompt_consistency', 'room_type_prompt_consistency']:
             r.append(metric_result[1])
-        elif category in ['polygon_area_sum_vs_total_area_prompt_consistency',
+        elif category in [
                         'room_area_prompt_consistency', 'num_room_prompt_consistency', 'total_area_self_consistency',
                         'room_height_prompt_consistency', 'room_width_prompt_consistency']:
             r.append(1-metric_result)
-        elif category in ['room_width_self_consistency', 'room_height_self_consistency']:
+        elif category in ['polygon_area_sum_vs_total_area_prompt_consistency','room_width_self_consistency', 'room_height_self_consistency']:
             r.append(metric_result)
         else:
             r.append(metric_result)
